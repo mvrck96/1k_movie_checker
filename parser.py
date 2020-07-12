@@ -2,7 +2,6 @@ from urllib.request import urlopen as uReq, quote
 from bs4 import BeautifulSoup as soup
 import pandas as pd
 from math import nan
-import openpyxl
 
 ivi_url = 'https://www.ivi.ru/search/?q='
 megogo_url = 'https://megogo.ru/ru/search-extended?q='
@@ -60,7 +59,7 @@ def tableManager(ivi_dict, megogo_dict):
     for key in megogo_dict:
         megogoSearch(key)
 
-    result_data.to_excel('result.xlsx', index_label='Title')
+    result_data.to_csv('result.csv', index_label='Title')
 
     return result_data
 
