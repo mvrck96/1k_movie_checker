@@ -11,11 +11,11 @@ Main idea of this project was to create a python based parser which can perform 
 
 ### Dependencies
 
-`from urllib.request import urlopen as uReq, quote`
-`from bs4 import BeautifulSoup as soup`
-`import pandas as pd`
-`from math import nan`
-`import openpyxl`
+`from urllib.request import urlopen as uReq, quote`  \\
+`from bs4 import BeautifulSoup as soup` \\
+`import pandas as pd` \\
+`from math import nan` \\
+`import openpyxl` \\
 
 ### Getting started
 
