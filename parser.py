@@ -1,7 +1,9 @@
-from urllib.request import urlopen as uReq, quote
-from bs4 import BeautifulSoup as soup
-import pandas as pd
 from math import nan
+from urllib.request import quote
+from urllib.request import urlopen as uReq
+
+import pandas as pd
+from bs4 import BeautifulSoup as soup
 
 ivi_url = 'https://www.ivi.ru/search/?q='
 megogo_url = 'https://megogo.ru/ru/search-extended?q='
@@ -10,10 +12,10 @@ ivi_dict = dict()
 megogo_dict = dict()
 
 
-def iviSearch(url):
-    uClient = uReq(url)
-    target_page = uClient.read()
-    uClient.close()
+def ivi_search(url):
+    client = uReq(url)
+    target_page = client.read()
+    client.close()
 
     page_soup = soup(target_page, 'lxml')
     containers = page_soup.findAll('li', {'class': 'gallery__item'})
@@ -31,14 +33,15 @@ def iviSearch(url):
         result_data.loc[ivi_dict[url], 'Ivi'] = 'Нет'
 
 
-def megogoSearch(url):
-    uClient = uReq(url)
-    target_page = uClient.read()
-    uClient.close()
+def megogo_search(url):
+    client = uReq(url)
+    target_page = client.read()
+    client.close()
 
     page_soup = soup(target_page, 'lxml')
     containers = page_soup.findAll('div', {
-                                   'class': 'card videoItem direction-vertical orientation-portrait size-normal type-normal'})
+        'class': 'card videoItem direction-vertical orientation-portrait '
+                 'size-normal type-normal'})
 
     results = []
 
@@ -52,15 +55,12 @@ def megogoSearch(url):
         result_data.loc[megogo_dict[url], 'Megogo'] = 'Нет'
 
 
-def tableManager(ivi_dict, megogo_dict):
-    for key in ivi_dict:
-        iviSearch(key)
-
-    for key in megogo_dict:
-        megogoSearch(key)
-
+def table_manager(dict1, dict2):
+    for key in dict1:
+        ivi_search(key)
+    for key in dict2:
+        megogo_search(key)
     result_data.to_csv('result.csv', index_label='Title')
-
     return result_data
 
 
@@ -75,4 +75,4 @@ for title in titles:
 
 result_data = pd.DataFrame({'Ivi': nan, 'Megogo': nan}, index=titles)
 
-tableManager(ivi_dict, megogo_dict)
+table_manager(ivi_dict, megogo_dict)
