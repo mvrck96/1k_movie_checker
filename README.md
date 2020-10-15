@@ -1,4 +1,8 @@
 # 1k_movie_checker
+
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
+
 ### Quick info
 Small parser that performs search of specified movies in several online movie theaters 
 
