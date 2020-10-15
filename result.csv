@@ -1,11 +1,11 @@
-Title,Ivi,Megogo
-властелин колец 3: возвращение короля,Нет,Нет
-терминатор 2: судный день,Есть,Нет
-побег из шоушенка,Есть,Есть
-форрест гамп,Есть,Есть
-властелин колец 2: две крепости,Нет,Нет
-властелин колец: братство кольца,Есть,Есть
-шерлок холмс и доктор ватсон: король шантажа,Нет,Нет
-жестокий романс,Есть,Есть
-список шиндлера,Есть,Есть
-титаник,Есть,Есть
+,megogo,okko,tnt,tvigle,wink
+Властелин колец 3: возвращение короля,False,False,False,False,False
+Терминатор 2: судный день,False,True,False,False,False
+Побег из шоушенка,True,True,False,False,True
+Форрест гамп,True,True,False,False,True
+Властелин колец 2: две крепости,False,False,False,False,False
+Властелин колец: братство кольца,True,True,False,False,False
+Шерлок холмс и доктор ватсон: король шантажа,False,True,False,False,False
+Жестокий романс,True,True,False,True,True
+Список шиндлера,True,True,False,False,True
+Титаник,True,True,False,False,True
