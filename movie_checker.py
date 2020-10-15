@@ -40,14 +40,8 @@ def search(title: str, theater_handler: str) -> bool:
     page_soup = soup(target_page, 'lxml')
     containers = page_soup.findAll(meta[1][0],{'class': meta[1][1]})
     founded_titles = [container.text.strip().lower() for container in containers]
-    result = False
-
-    if title in founded_titles:
-        result = True
-    else:
-        results = False
+    result = True if title in founded_titles else False
     return result
-
 
 def get_titles(file_handler=None) -> list:
     """
