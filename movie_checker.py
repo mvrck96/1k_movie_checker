@@ -3,10 +3,13 @@ from urllib.request import quote
 from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 
+import argparse
+import os
+
 THEATER_DICT = {
     'megogo': ['https://megogo.ru/ru/search-extended?q=',('h3', 'video-title')],
     'okko': ['https://okko.tv/search/', ('span', '_7NsSm')],
-    'tnt': ['https://premier.one/search?query=', ('div', 'slider-title')],
+    'tnt_premier': ['https://premier.one/search?query=', ('div', 'slider-title')],
     'tvigle': ['https://www.tvigle.ru/search/?q=', ('div', 'product-list__item_name')],
     'wink': ['https://wink.rt.ru/search?query=', ('h4', 'root_r1ru04lg title_tyrtgqg root_subtitle2_r18emsye')],
 }
@@ -61,31 +64,44 @@ def get_titles(file_handler=None) -> list:
     return titles
 
 
-def search_manager(titles: list) -> pd.DataFrame:
+def search_manager(titles: list, movie: str) -> pd.DataFrame:
     """
     Perform search and makes a table with search results
 
     Parameters
     ----------
     titles: list, list of movie titles to search
-
+    movie: str, single movie to find
     Returns
     -------
     Table
         pd.DataFrame, result table
     """
-    table = pd.DataFrame(index=titles)
-    for key in THEATER_DICT:
-        result = [search(title, key) for title in titles]
-        table[key] = result
+
+    if movie:
+        table = pd.DataFrame(index=[movie])
+        for key in THEATER_DICT:
+            table[key] = search(movie, key)
+        print(table.head())
+    else:
+        table = pd.DataFrame(index=titles)
+        for key in THEATER_DICT:
+            result = [search(title, key) for title in titles]
+            table[key] = result
     return table
 
 
 if __name__ == '__main__':
     # todo: Сделать индикацию прогресса поиска фильмов. Что бы было понятно как идет процесс
-    movies_to_find = get_titles('search_list.txt')
-    search_manager(movies_to_find).to_csv('result.csv')
+    # todo: Добавить обработчик запуска с параметром
 
-    print(f"Successfully parsed {len(movies_to_find)} movies \n"
-          f"Results in ---> result.csv")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--movie", type=str)
+    args = parser.parse_args()
+    single_movie = args.movie
+
+    movies_to_find = get_titles('search_list.txt')
+    search_manager(movies_to_find, single_movie).to_csv('result.csv')
+
+    print(f"Done !")
 
