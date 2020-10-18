@@ -6,7 +6,13 @@
 Small parser that performs search of specified movies in several online movie theaters.Right now works with Russian 
 online movie theaters.
 
-## Dependencies
+## Required modules
+
+- `pandas`
+- `bs4`
+- `progress`
+
+For versions you can check `requirements.txt`
 
 
 

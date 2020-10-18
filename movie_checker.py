@@ -4,9 +4,8 @@ from urllib.request import urlopen as uReq
 from bs4 import BeautifulSoup as soup
 from typing import Tuple
 from progress.bar import FillingCirclesBar
-
 import argparse
-import os
+
 
 THEATER_DICT = {
     'Megogo': ['https://megogo.ru/ru/search-extended?q=',('h3', 'video-title')],
