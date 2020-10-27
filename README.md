@@ -1,6 +1,9 @@
 # Movie cheker
 
-[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/) 
+
+![GitHub Releases](https://img.shields.io/github/downloads/mvrck96/1k_movie_checker/0.1/total?logo=release&style=flat-square) ![GitHub commit activity](https://img.shields.io/github/commit-activity/w/mvrck96/1k_movie_checker)
+
 
 ## Quick info
 Small parser that performs search of specified movies in several online movie theaters.Right now works with Russian 
