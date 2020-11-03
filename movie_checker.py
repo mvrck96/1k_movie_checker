@@ -1,18 +1,25 @@
-import pandas as pd
-from urllib.request import quote
-from urllib.request import urlopen as uReq
-from bs4 import BeautifulSoup as soup
-from typing import Tuple
-from progress.bar import FillingCirclesBar
+import os
 import argparse
+import pandas as pd
 
+from typing import Tuple
+from urllib.request import quote
+from bs4 import BeautifulSoup as soup
+from urllib.request import urlopen as uReq
+from progress.bar import FillingCirclesBar
 
+SEARCH_FILE = 'search_list.txt'
+RESULT_FILE = 'result.csv'
 THEATER_DICT = {
-    'Megogo': ['https://megogo.ru/ru/search-extended?q=',('h3', 'video-title')],
+    'Megogo': ['https://megogo.ru/ru/search-extended?q=',
+               ('h3', 'video-title')],
     'Okko': ['https://okko.tv/search/', ('span', '_7NsSm')],
-    'Tnt_premier': ['https://premier.one/search?query=', ('div', 'slider-title')],
-    'Tvigle': ['https://www.tvigle.ru/search/?q=', ('div', 'product-list__item_name')],
-    'Wink': ['https://wink.rt.ru/search?query=', ('h4', 'root_r1ru04lg title_tyrtgqg root_subtitle2_r18emsye')],
+    'Tnt_premier': ['https://premier.one/search?query=',
+                    ('div', 'slider-title')],
+    'Tvigle': ['https://www.tvigle.ru/search/?q=',
+               ('div', 'product-list__item_name')],
+    'Wink': ['https://wink.rt.ru/search?query=',
+             ('h4', 'root_r1ru04lg title_tyrtgqg root_subtitle2_r18emsye')],
 }
 
 
@@ -20,13 +27,12 @@ def search(title: str, theater_handler: str) -> bool:
     """
     Check if online movie theater have specified movie.
 
-    Checking is performed with parsing the HTML file addressed with url from THEATER_DICT.
-    If given title could be found on this page true value returned, if not than false.
+    Checking is performed with parsing the HTML file addressed with url from
+    THEATER_DICT. If given title could be found on this page true value
+    returned, if not than false.
 
-    Parameters
-    ----------
-    title: str, movie to found
-    theater_handler: str, handler of theater to find in. Can be found in THEATER_DICT
+    Parameters ---------- title: str, movie to found theater_handler: str,
+    handler of theater to find in. Can be found in THEATER_DICT
 
     Returns
     -------
@@ -42,8 +48,9 @@ def search(title: str, theater_handler: str) -> bool:
     client.close()
 
     page_soup = soup(target_page, 'lxml')
-    containers = page_soup.findAll(meta[1][0],{'class': meta[1][1]})
-    founded_titles = [container.text.strip().lower() for container in containers]
+    containers = page_soup.findAll(meta[1][0], {'class': meta[1][1]})
+    founded_titles = [container.text.strip().lower() for container in
+                      containers]
     result = True if title in founded_titles else False
     return result
 
@@ -74,6 +81,7 @@ def search_manager(titles: list, movie: str, to_show: bool) -> pd.DataFrame:
     ----------
     titles: list, list of movie titles to search
     movie: str, single movie to find
+    to_show: bool,
     Returns
     -------
     Table
@@ -83,7 +91,7 @@ def search_manager(titles: list, movie: str, to_show: bool) -> pd.DataFrame:
         table = pd.DataFrame(index=[movie])
         for key in THEATER_DICT:
             table[key] = search(movie, key)
-        print('='*80)
+        print('=' * 80)
         print(table.head())
         print('=' * 80)
     else:
@@ -112,16 +120,44 @@ def parse_args() -> Tuple[str, bool]:
         Params to use
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument("--single", type=str, help='Single title to find')
-    parser.add_argument("--show", type=bool, default=False, help='Showing results in CLI')
+    parser.add_argument(
+        "-si",
+        "--single",
+        type=str,
+        help='Enter single movie title to perform a quick search'
+    )
+    parser.add_argument(
+        "-sh",
+        "--show",
+        type=bool,
+        default=False,
+        help='Show or not search results in terminal. False by default'
+    )
     args = parser.parse_args()
     return args.single, args.show
 
 
+def file_manager(search_file_handler: str) -> None:
+    """
+    Checks if search_file.txt exists if not than creates it
+    Parameters
+    ----------
+    search_file_handler, str: Name of the file to check
+
+    Returns
+    -------
+        None
+    """
+    if not os.path.exists(search_file_handler):
+        os.mknod(search_file_handler)
+
+
 if __name__ == '__main__':
-    # todo: Сделать обработчик состояний файлов search_list.txt и result.txt
-    # todo: Переписать search_manager()
-    # todo: Подумать над добавлением западных кинотеатров + поиске фильмов на английском языке
+    # todo: Добавить в search manager аботчик ошибок
+    # todo: Подумать над добавлением
+    #   западных кинотеатров + поиске фильмов на английском языке
     single_movie, show = parse_args()
-    movies_to_find = get_titles('search_list.txt')
-    search_manager(movies_to_find, single_movie, show).to_csv('result.csv')
+    if not single_movie:
+        file_manager(SEARCH_FILE)
+    movies_to_find = get_titles(SEARCH_FILE)
+    search_manager(movies_to_find, single_movie, show).to_csv(RESULT_FILE)

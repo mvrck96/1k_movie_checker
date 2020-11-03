@@ -55,3 +55,18 @@ Searching:  ◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉◉�
 Searching of 3 movies done.
 Check results.csv
 ```
+
+### Help
+
+```shell script
+usage: movie_checker.py [-h] [-si SINGLE] [-sh SHOW]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -si SINGLE, --single SINGLE
+                        Enter single movie title to perform a quick search
+  -sh SHOW, --show SHOW
+                        Show or not search results in terminal. False by
+                        default
+
+```
